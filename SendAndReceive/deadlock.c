@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define ARR_SIZE 10000
+
 int main(int* argc, int** argv) {
     // the goal of this program is to create a deadlock 
 
@@ -24,19 +26,25 @@ int main(int* argc, int** argv) {
     int next_rank = (world_rank + 1) % world_size;
     int previous_rank = (world_rank + (world_size - 1)) % world_size;
 
-    int my_number = (rand() / (float) RAND_MAX) * 10;
-    int received_number;
+    int* my_arr = (int*) malloc(ARR_SIZE * sizeof(int));
+    int* received_arr = (int*) malloc(ARR_SIZE * sizeof(int));
 
+    for (int i = 0; i < ARR_SIZE; i++) {
+        my_arr[i] = (rand() / (float) RAND_MAX) * 10;
+    }
 
-    MPI_Send(&my_number, 1, MPI_INT, next_rank, 0, MPI_COMM_WORLD);
-    printf("Process %d sent value %d to process %d.\n", world_rank, my_number, next_rank);
+    MPI_Send(&my_arr, ARR_SIZE, MPI_INT, next_rank, 0, MPI_COMM_WORLD);
+    printf("Process %d sent value to process %d.\n", world_rank, next_rank);
+    free(my_arr);
+
+    // MPI_Barrier(MPI_COMM_WORLD);
+
+    MPI_Recv(&received_arr, ARR_SIZE, MPI_INT, previous_rank, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    printf("Process %d received from process %d.\n", world_rank, previous_rank);
 
     MPI_Barrier(MPI_COMM_WORLD);
+    free(received_arr);
 
-    MPI_Recv(&received_number, 1, MPI_INT, previous_rank, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    printf("Process %d received %d from process %d.\n", world_rank, received_number, previous_rank);
-
-    MPI_Barrier(MPI_COMM_WORLD);
     printf("%d All processes finished\n", world_rank);
 
     MPI_Finalize();
