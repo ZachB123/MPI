@@ -1,4 +1,4 @@
-EXECS=send_recv ping_pong ring
+EXECS=send_recv ping_pong ring deadlock
 MPICC?=mpicc
 
 all: ${EXECS}
@@ -14,6 +14,9 @@ ping_pong: ping_pong.c
 # compiles ring
 ring: ring.c
 	${MPICC} -o ring ring.c
+
+deadlock: deadlock.c
+	${MPICC} -o deadlock deadlock.c
 
 clean:
 	rm -f ${EXECS}
