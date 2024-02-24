@@ -92,7 +92,6 @@ int main(int* argc, char** argv) {
         strcat(output, temp);
     }
     strcat(output, "\n");
-    printf("%s", output);
 
     int partial_sum = 0;
     for (int i = 0; i < send_count; i++) {
@@ -100,7 +99,7 @@ int main(int* argc, char** argv) {
     }
     float partial_average = partial_sum / (1.0 * send_count);
 
-    printf("Process %d has partial average of %f.\n", world_rank, partial_average);
+    printf("%sProcess %d has partial average of %.3f.\n", output, world_rank, partial_average);
 
     if (world_rank == 0) {
 
@@ -112,7 +111,7 @@ int main(int* argc, char** argv) {
             sum += partials[i];
         }
 
-        printf("Average is %f.\n", sum / NUMBER_PROCESSES);
+        printf("Average is %.3f.\n", sum / NUMBER_PROCESSES);
 
     } else {
         MPI_Gather(&partial_average, 1, MPI_FLOAT, NULL, 10, MPI_FLOAT, 0, MPI_COMM_WORLD);

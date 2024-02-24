@@ -111,6 +111,7 @@ int main(int argc, char** argv) {
         exit(1);
     }
 
+    // ascii to int
     domain_size = atoi(argv[1]);
     max_walk_size = atoi(argv[2]);
     num_walkers_per_proc = atoi(argv[3]);

@@ -40,7 +40,7 @@ int main(int argc, char** argv) {
 
     double total_my_bcast_time = 0.0;
     double total_mpi_bcast_time = 0.0;
-    int* data = (int*) malloc(sizeof(int) * num_elements);
+    int* data = (int*) malloc(sizeof(int)* num_elements);
 
     // this makes sure we actually got a pointer to data i.e enough memory in the heap
     assert(data != NULL);

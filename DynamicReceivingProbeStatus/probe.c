@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
         int* number_buffer = (int*) malloc(sizeof(int) * number_amount);
 
         MPI_Recv(number_buffer, number_amount, MPI_INT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        printf("1 received %d items from 0", number_amount);
+        printf("1 received %d items from 0\n", number_amount);
 
         // DO NOT FORGET TO FREE
         free(number_buffer);
